@@ -26,8 +26,8 @@ jobs:
 
       - name: Run Build App
         run: 
-            npm run build
             npm ci
+            npm run build
         env:
           CI: ""
 
