@@ -1,0 +1,47 @@
+name: SonarQube Scan Frontend
+on:
+  workflow_call:
+    secrets:
+        SONAR_TOKEN:
+          required: true
+
+env:
+    project_key: ${{ secrets.SONAR_PROJECT_KEY }}
+    organization_key: ${{ secrets.SONAR_ORGANIZATION_KEY }}
+    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    SONAR_HOST_URL: "https://sonarcloud.io"
+
+jobs:
+    sonar-image:
+        name: SonarQube Scan Image
+        runs-on: ubuntu-latest
+        steps:
+            - name: SonarQube Scan
+              run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar \
+                -Dsonar.projectKey=${{ env.project_key }} \
+                -Dsonar.host.url=https://sonarcloud.io \
+                -Dsonar.login=${{ env.SONAR_TOKEN }}
+
+            - name: Install SonarQube scanner
+              run: npm install -g sonar-scanner
+        
+            - name: Run SonarQube scan
+              run: |
+                sonar-scanner \
+                -Dsonar.projectKey=${{ env.project_key }} \
+                -Dsonar.organization=${{ env.organization_key }} \
+                -Dsonar.sources=. \
+                -Dsonar.exclusions=node_modules/**,build/** \
+                -Dsonar.tests=src \
+                -Dsonar.test.inclusions=src/**/*.test.js,src/**/*.spec.js \
+                -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+                -Dsonar.testExecutionReportPaths=coverage/test-report.xml
+        
+            - name: Upload coverage to SonarQube
+              run: sonar-scanner
+        
+            - name: Check code quality gate
+              run: |
+                curl -s -u ${{ env.SONAR_TOKEN }} "${{ env.SONAR_HOST_URL }}/api/qualitygates/project_status?projectKey=${{ env.project_key }}" \
+                | jq . \
+                | tee sonar-quality-gate.json
