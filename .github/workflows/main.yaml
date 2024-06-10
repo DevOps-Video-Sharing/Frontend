@@ -15,7 +15,6 @@ jobs:
         node-version: [18.x]
 
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -39,7 +38,7 @@ jobs:
     uses: ./.github/workflows/sonarqube-scan.yaml
     secrets: 
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      
+
     #   - name: SonarQube Scan
     #     env:
     #       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
