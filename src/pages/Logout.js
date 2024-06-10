@@ -4,7 +4,7 @@ const Logout = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        fetch('http://localhost:8080/logout', {
+        fetch(`${process.env.REACT_APP_API_URL}/user/logout`, {
             method: 'POST',
             credentials: 'include'
         })

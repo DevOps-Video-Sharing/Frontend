@@ -67,7 +67,7 @@ const ChangeProfile  = () =>
         }
 
         try {       
-            const data =  await axios.put(`http://localhost:8080/user/changePassword/${userId}`, bodyData)
+            const data =  await axios.put(`${process.env.REACT_APP_API_URL}/user/changePassword/${userId}`, bodyData)
             if (!data.data)
             {
                 alert('Sai mật khẩu')

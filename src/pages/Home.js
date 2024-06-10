@@ -19,7 +19,7 @@ const Home = () => {
   // useEffect(() => {
   //   const fetchVideoIds = async () => {
   //     try {
-  //       const response = await fetch('http://localhost:8080/video/listIdThumbnail')
+  //       const response = await fetch('${process.env.REACT_APP_API_URL}/video/listIdThumbnail')
   //       if (response.ok) {
   //         const ids = await response.json();
   //         setVideoIds(ids);
@@ -36,7 +36,7 @@ const Home = () => {
   useEffect(() => {
     const fetchVideoIds = async () => {
       try {
-        const response = await fetch('http://localhost:8080/video/listIdThumbnail');
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/video/listIdThumbnail`);
         if (!response.ok) {
           throw new Error('Failed to fetch video ids');
         }
@@ -44,7 +44,7 @@ const Home = () => {
         setVideoIds(ids);
         const fetchDataPromises = ids.map(async id => {
           console.log(id)
-          const response = await fetch(`http://localhost:8080/video/getDetails/${id}`);
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/video/getDetails/${id}`);
           if (!response.ok) {
             throw new Error(`Failed to fetch data for id: ${id}`);
           }
@@ -81,7 +81,7 @@ const Home = () => {
 
   const generateThumbnailUrls = () => {
     return videoIds.map((id) => {
-      return  `http://localhost:8080/video/get/${id}`
+      return  `${process.env.REACT_APP_API_URL}/video/get/${id}`
       });
   };
   

@@ -20,7 +20,7 @@ const Comment = () => {
 
     const fetchComments = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/comment/getALLCommentByVideoId/${videoId}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/comment/getALLCommentByVideoId/${videoId}`);
             setComments(response.data || []); // Ensure comments is an array
         } catch (error) {
             console.error("Error fetching comments:", error);
@@ -36,7 +36,7 @@ const Comment = () => {
         if (commentText.trim()) {
             try {
                 const newComment = { text: commentText, likes: 0, dislikes: 0, videoId: videoId, userId: userId, userName: userName };
-                await axios.post('http://localhost:8080/comment/upload', newComment);
+                await axios.post('${process.env.REACT_APP_API_URL}/comment/upload', newComment);
                 setCommentText("");
                 fetchComments(); // Refresh the comments list
             } catch (error) {

@@ -22,7 +22,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
     try {
         event.preventDefault();
 
-        const response = await fetch('http://localhost:8080/user/login2', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/user/login2`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

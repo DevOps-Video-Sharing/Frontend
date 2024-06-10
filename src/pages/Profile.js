@@ -51,7 +51,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchVideoIds = async () => {
           try {
-            const response = await fetch(`http://localhost:8080/video/get${listLike?'IdFromLikerToId':'DetailsByUserId'}/${userToken}`);
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/video/get${listLike?'IdFromLikerToId':'DetailsByUserId'}/${userToken}`);
             if (!response.ok) {
               throw new Error('Failed to fetch video ids');
             }
@@ -59,7 +59,7 @@ const Profile = () => {
             setVideoIds(ids);
             const fetchDataPromises = ids.map(async id => {
               console.log(id)
-              const response = await fetch(`http://localhost:8080/video/getDetails/${id}`);
+              const response = await fetch(`${process.env.REACT_APP_API_URL}/video/getDetails/${id}`);
               if (!response.ok) {
                 throw new Error(`Failed to fetch data for id: ${id}`);
               }
@@ -80,7 +80,7 @@ const Profile = () => {
         const getDetailUser = async () =>
         {
             try {
-                const data = await axios.get(`http://localhost:8080/user/listUserbyId/${userToken}`)
+                const data = await axios.get(`${process.env.REACT_APP_API_URL}/user/listUserbyId/${userToken}`)
                 setUserDetail(data.data)
             } catch (error) {
                 
@@ -89,10 +89,10 @@ const Profile = () => {
         const getSubscribe = async () =>
         {
             try {
-                // const data = await axios.post(`http://localhost:8080/video/subscribe?subscriberId=${usId}&subscribedToId=${myId}`)
-                const numOfSubs= await axios.get(`http://localhost:8080/video/getSubscriberCount?userId=${userToken}`)
+                // const data = await axios.post(`${process.env.REACT_APP_API_URL}/video/subscribe?subscriberId=${usId}&subscribedToId=${myId}`)
+                const numOfSubs= await axios.get(`${process.env.REACT_APP_API_URL}/video/getSubscriberCount?userId=${userToken}`)
                 setNumSub(numOfSubs.data)
-                const dataIsSub = await axios.get(`http://localhost:8080/video/isSubscribed?subscriberId=${myId}&subscribedToId=${userToken}`)
+                const dataIsSub = await axios.get(`${process.env.REACT_APP_API_URL}/video/isSubscribed?subscriberId=${myId}&subscribedToId=${userToken}`)
                 setIsSub(dataIsSub.data)
     
             } catch (error) {
@@ -108,10 +108,10 @@ const Profile = () => {
         try {
           if (!act)
           {
-            await axios.post(`http://localhost:8080/video/subscribe?subscriberId=${myId}&subscribedToId=${userToken}`)
+            await axios.post(`${process.env.REACT_APP_API_URL}/video/subscribe?subscriberId=${myId}&subscribedToId=${userToken}`)
           }
           else{
-            await axios.post(`http://localhost:8080/video/unsubscribe?subscriberId=${myId}&subscribedToId=${userToken}`)
+            await axios.post(`${process.env.REACT_APP_API_URL}/video/unsubscribe?subscriberId=${myId}&subscribedToId=${userToken}`)
           }
         } catch (error) {
           
@@ -135,7 +135,7 @@ const Profile = () => {
 
     const generateThumbnailUrls = () => {
         return videoIds.map((id) => {
-        return  `http://localhost:8080/video/get/${id}`
+        return  `${process.env.REACT_APP_API_URL}/video/get/${id}`
         });
     };
     const thumbnails =  generateThumbnailUrls();

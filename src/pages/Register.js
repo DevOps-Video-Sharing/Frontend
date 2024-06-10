@@ -20,7 +20,7 @@ const Register = () => {
     }
     try {
       // alert('Một email xác thực đã được gửi đến hòm thư của bạn. Vui lòng kiểm tra và nhập mã xác thực để hoàn tất đăng ký!');
-       const emailVerificationResponse = await fetch('http://localhost:8080/user/send-verification-email', {
+       const emailVerificationResponse = await fetch(`${process.env.REACT_APP_API_URL}/user/send-verification-email`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ const Register = () => {
 
 
 
-      const response = await fetch('http://localhost:8080/user/register', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/user/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

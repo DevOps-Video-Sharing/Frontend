@@ -16,20 +16,20 @@ const Mainvideo = (props) =>
 
 
     const handleGetVideoId = async ( videoId) => {
-        const apiUrl = "http://localhost:8080/video/getVideoIdFromThumbnailId/" + videoId;
+        const apiUrl = `${process.env.REACT_APP_API_URL}/video/getVideoIdFromThumbnailId/` + videoId;
         const response = await fetch(apiUrl);
         const result = await response.text();
-        await fetch(`http://localhost:8080/video/updateViews/${videoId}`, {method: 'PUT',
+        await fetch(`${process.env.REACT_APP_API_URL}/video/updateViews/${videoId}`, {method: 'PUT',
             headers: {
               'Content-Type': 'application/json'
             },})
         setDisplayVideo(result)
         try {
-          const data = await axios.get(`http://localhost:8080/video/getLikeCount?videoId=${videoId}`);
+          const data = await axios.get(`${process.env.REACT_APP_API_URL}/video/getLikeCount?videoId=${videoId}`);
           console.log('dis',displayVideo)
           setNumLike(data.data)
           
-          const dataIsLike = await axios.get(`http://localhost:8080/video/isLiked?likerToId=${myId}&likedToId=${videoId}`);
+          const dataIsLike = await axios.get(`${process.env.REACT_APP_API_URL}/video/isLiked?likerToId=${myId}&likedToId=${videoId}`);
           setIsLike(dataIsLike.data)
   
         } catch (error) {
@@ -44,10 +44,10 @@ const Mainvideo = (props) =>
           }
           if (!act)
           {
-            await axios.post(`http://localhost:8080/video/like?likerToId=${myId}&likedToId=${props?.videoId}`, body)
+            await axios.post(`${process.env.REACT_APP_API_URL}/video/like?likerToId=${myId}&likedToId=${props?.videoId}`, body)
           }
           else{
-            await axios.post(`http://localhost:8080/video/unlike?likerToId=${myId}&likedToId=${props?.videoId}`, body)
+            await axios.post(`${process.env.REACT_APP_API_URL}/video/unlike?likerToId=${myId}&likedToId=${props?.videoId}`, body)
           }
         } catch (error) {
           
@@ -100,7 +100,7 @@ const Mainvideo = (props) =>
         <div className=''>
             <div className='flex justify-center'>
                 <div className='w-full h-auto bg-white'>
-                    <video src ={`http://localhost:8080/video/get/${displayVideo}`} controls  
+                    <video src ={`${process.env.REACT_APP_API_URL}/video/get/${displayVideo}`} controls  
                         autoPlay
                         muted
                         loop

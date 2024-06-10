@@ -36,7 +36,7 @@ const Video = (props) => {
   // useEffect(() => {
   //   const fetchVideoIds = async () => {
   //     try {
-  //       const response = await fetch('http://localhost:8080/video/getAllIds');
+  //       const response = await fetch('${process.env.REACT_APP_API_URL}/video/getAllIds');
   //       if (response.ok) {
   //         const ids = await response.json();
   //         setVideoIds(ids);
@@ -72,7 +72,7 @@ const Video = (props) => {
   useEffect(()=>{
     const fetchInforVideo = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/video/getDetails/${videoId}`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/video/getDetails/${videoId}`);
         if (response.ok) {
           const data = await response.json();
           const mongoTimestamp = new Date(data.metadata.timestamp); // Timestamp của MongoDB
@@ -90,7 +90,7 @@ const Video = (props) => {
   },[])
 
   const generateVideoUrls = () => {
-    return videoIds.map((id) => `http://localhost:8080/video/get/${id}`);
+    return videoIds.map((id) => `${process.env.REACT_APP_API_URL}/video/get/${id}`);
   };
   const videos = generateVideoUrls();
   function formatMongoTimestamp(timestamp) {
@@ -106,10 +106,10 @@ const Video = (props) => {
     const getLike= async() =>
     {
       try {
-        const data = await axios.get(`http://localhost:8080/video/getLikeCount?videoId=${thumbId}`);
+        const data = await axios.get(`${process.env.REACT_APP_API_URL}/video/getLikeCount?videoId=${thumbId}`);
         setNumLike(data.data)
         
-        const dataIsLike = await axios.get(`http://localhost:8080/video/isLiked?likerToId=${myId}&likedToId=${thumbId}`);
+        const dataIsLike = await axios.get(`${process.env.REACT_APP_API_URL}/video/isLiked?likerToId=${myId}&likedToId=${thumbId}`);
         console.log('ok',dataIsLike.data)
         setIsLike(dataIsLike.data)
 
@@ -120,10 +120,10 @@ const Video = (props) => {
     const getSubscribe = async () =>
     {
       try {
-          // const data = await axios.post(`http://localhost:8080/video/subscribe?subscriberId=${usId}&subscribedToId=${myId}`)
-          const numOfSubs= await axios.get(`http://localhost:8080/video/getSubscriberCount?userId=${usId}`)
+          // const data = await axios.post(`${process.env.REACT_APP_API_URL}/video/subscribe?subscriberId=${usId}&subscribedToId=${myId}`)
+          const numOfSubs= await axios.get(`${process.env.REACT_APP_API_URL}/video/getSubscriberCount?userId=${usId}`)
           setNumSub(numOfSubs.data)
-          const dataIsSub = await axios.get(`http://localhost:8080/video/isSubscribed?subscriberId=${myId}&subscribedToId=${usId}`)
+          const dataIsSub = await axios.get(`${process.env.REACT_APP_API_URL}/video/isSubscribed?subscriberId=${myId}&subscribedToId=${usId}`)
           setIsSub(dataIsSub.data)
 
       } catch (error) {
@@ -143,10 +143,10 @@ const Video = (props) => {
       }
       if (!act)
       {
-        await axios.post(`http://localhost:8080/video/like?likerToId=${myId}&likedToId=${thumbId}`, body)
+        await axios.post(`${process.env.REACT_APP_API_URL}/video/like?likerToId=${myId}&likedToId=${thumbId}`, body)
       }
       else{
-        await axios.post(`http://localhost:8080/video/unlike?likerToId=${myId}&likedToId=${thumbId}`, body)
+        await axios.post(`${process.env.REACT_APP_API_URL}/video/unlike?likerToId=${myId}&likedToId=${thumbId}`, body)
       }
     } catch (error) {
       
@@ -170,10 +170,10 @@ const Video = (props) => {
     try {
       if (!act)
       {
-        await axios.post(`http://localhost:8080/video/subscribe?subscriberId=${myId}&subscribedToId=${usId}`)
+        await axios.post(`${process.env.REACT_APP_API_URL}/video/subscribe?subscriberId=${myId}&subscribedToId=${usId}`)
       }
       else{
-        await axios.post(`http://localhost:8080/video/unsubscribe?subscriberId=${myId}&subscribedToId=${usId}`)
+        await axios.post(`${process.env.REACT_APP_API_URL}/video/unsubscribe?subscriberId=${myId}&subscribedToId=${usId}`)
       }
     } catch (error) {
       
@@ -197,7 +197,7 @@ const Video = (props) => {
   useEffect(() => {
     const fetchVideoIds = async () => {
       try {
-        const response = await fetch('http://localhost:8080/video/listIdThumbnail');
+        const response = await fetch('${process.env.REACT_APP_API_URL}/video/listIdThumbnail');
         if (!response.ok) {
           throw new Error('Failed to fetch video ids');
         }
@@ -205,7 +205,7 @@ const Video = (props) => {
         setVideoIds(ids);
         const fetchDataPromises = ids.map(async id => {
           // console.log(id)
-          const response = await fetch(`http://localhost:8080/video/getDetails/${id}`);
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/video/getDetails/${id}`);
           if (!response.ok) {
             throw new Error(`Failed to fetch data for id: ${id}`);
           }
@@ -223,7 +223,7 @@ const Video = (props) => {
   
 const generateThumbnailUrls = () => {
     return videoIds.map((id) => {
-    return  `http://localhost:8080/video/get/${id}`
+    return  `${process.env.REACT_APP_API_URL}/video/get/${id}`
     });
 };
 const handleClickChannel = () =>
@@ -239,7 +239,7 @@ const thumbnails =  generateThumbnailUrls();
       <div className='px-[60px] py-[20px] flex'>
         <div className='w-8/12'>
             <div className=' h-auto bg-black'>
-                <video src ={`http://localhost:8080/video/get/${videoId}`} controls  
+                <video src ={`${process.env.REACT_APP_API_URL}/video/get/${videoId}`} controls  
                     autoPlay
                     muted
                     loop

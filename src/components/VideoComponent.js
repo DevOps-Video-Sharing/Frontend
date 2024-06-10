@@ -23,14 +23,14 @@ const VideoComponent = (props) =>
 {
     const navigate = useNavigate()
     const handleClick = async ( videoId) => {
-        const apiUrl = "http://localhost:8080/video/getVideoIdFromThumbnailId/" + videoId;
+        const apiUrl = `${process.env.REACT_APP_API_URL}/video/getVideoIdFromThumbnailId/` + videoId;
         const response = await fetch(apiUrl);
         const result = await response.text();
-        await fetch(`http://localhost:8080/video/updateViews/${videoId}`, {method: 'PUT',
+        await fetch(`${process.env.REACT_APP_API_URL}/video/updateViews/${videoId}`, {method: 'PUT',
             headers: {
               'Content-Type': 'application/json'
             },})
-        const apiVideo = "http://localhost:8080/video/get/" + result;
+        const apiVideo = `${process.env.REACT_APP_API_URL}/video/get/` + result;
         console.log(apiVideo)
         navigate(`/video?videoId=${result}&v=${props?.view}&id=${props?.userid}&thumb=${videoId}`)
       };

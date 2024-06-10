@@ -13,7 +13,7 @@ const MonoComment = ({ comment, fetchComments }) => {
 
     const handleLike = async () => {
         try {
-            await axios.put(`http://localhost:8080/comment/increaseLikes/${comment.id}?increment=1`);
+            await axios.put(`${process.env.REACT_APP_API_URL}/comment/increaseLikes/${comment.id}?increment=1`);
             fetchComments(); // Refresh the comments list
         } catch (error) {
             console.error("Error increasing likes:", error);
@@ -22,7 +22,7 @@ const MonoComment = ({ comment, fetchComments }) => {
 
     const handleDislike = async () => {
         try {
-            await axios.put(`http://localhost:8080/comment/increaseDislikes/${comment.id}?increment=1`);
+            await axios.put(`${process.env.REACT_APP_API_URL}/comment/increaseDislikes/${comment.id}?increment=1`);
             fetchComments(); // Refresh the comments list
         } catch (error) {
             console.error("Error increasing dislikes:", error);
@@ -37,7 +37,7 @@ const MonoComment = ({ comment, fetchComments }) => {
         if (replyText.trim()) {
             try {
                 const newReply = { text: replyText, likes: 0, dislikes: 0, videoId: comment.videoId, userId: userId, userName: userName };
-                await axios.post(`http://localhost:8080/comment/relyCommentByCommentId/${comment.id}`, newReply);
+                await axios.post(`${process.env.REACT_APP_API_URL}/comment/relyCommentByCommentId/${comment.id}`, newReply);
                 setReplyText("");
                 setShowReplyInput(false);
                 fetchComments(); // Refresh the comments list
