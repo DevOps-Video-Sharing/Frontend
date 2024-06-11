@@ -13,26 +13,30 @@ jobs:
         name: SonarQube Scan Image
         runs-on: ubuntu-latest
         steps:
+            # - name: Run tests
+            #   run: npm test -- --coverage
+
             - name: Install SonarQube scanner
               run: npm install -g sonar-scanner
         
             - name: Run SonarQube scan
               run: |
-                sonar-scanner \
-                -Dsonar.projectKey=${{ env.project_key }} \
-                -Dsonar.organization=${{ env.organization_key }} \
-                -Dsonar.sources=. \
-                -Dsonar.exclusions=node_modules/**,build/** \
-                -Dsonar.tests=src \
-                -Dsonar.test.inclusions=src/**/*.test.js,src/**/*.spec.js \
-                -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
-                -Dsonar.testExecutionReportPaths=coverage/test-report.xml
+                npx sonar-scanner \
+                  -Dsonar.projectKey=${{ env.project_key }} \
+                  -Dsonar.organization=${{ env.organization_key }} \
+                  -Dsonar.sources=. \
+                  -Dsonar.exclusions=**/node_modules/**,**/*.test.js,**/*.spec.js \
+                  -Dsonar.tests=src \
+                  -Dsonar.test.inclusions=**/*.test.js,**/*.spec.js \
+                  -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+                  -Dsonar.host.url=http://localhost:9000 \
+                  -Dsonar.login=${{ secrets.SONAR_TOKEN}}
         
-            - name: Upload coverage to SonarQube
-              run: sonar-scanner
+            # - name: Upload coverage to SonarQube
+            #   run: sonar-scanner
         
-            - name: Check code quality gate
-              run: |
-                curl -s -u ${{ env.SONAR_TOKEN }} "${{ env.SONAR_HOST_URL }}/api/qualitygates/project_status?projectKey=${{ env.project_key }}" \
-                | jq . \
-                | tee sonar-quality-gate.json
+            # - name: Check code quality gate
+            #   run: |
+            #     curl -s -u ${{ env.SONAR_TOKEN }} "${{ env.SONAR_HOST_URL }}/api/qualitygates/project_status?projectKey=${{ env.project_key }}" \
+            #     | jq . \
+            #     | tee sonar-quality-gate.json
