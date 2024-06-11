@@ -33,19 +33,9 @@ jobs:
       - name: Set up MongoDB URI
         run: echo "SPRING_DATA_MONGODB_URI=mongodb://localhost:27017/frontend" >> $GITHUB_ENV
 
-  sonar-image:
-    needs: testing
-    uses: ./.github/workflows/sonarqube-scan.yaml
-    secrets: 
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-    #   - name: SonarQube Scan
-    #     env:
-    #       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    #     run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar \
-    #           -Dsonar.projectKey=devops-video-sharing \
-    #           -Dsonar.host.url=https://sonarcloud.io \
-    #           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+  # sonar-image:
+  #   needs: testing
+  #   uses: ./.github/workflows/sonarqube-scan.yaml
 
   build-image:
     needs: testing
