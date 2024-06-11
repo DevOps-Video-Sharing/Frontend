@@ -66,7 +66,6 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
     const handleFocusPass = () => {
         setFocusedPass(true);
       };
-  
     const handleBlur = () => {
       if (username === "") {
         setFocused(false);
