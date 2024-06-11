@@ -1,9 +1,6 @@
 name: SonarQube Scan Frontend
 on:
   workflow_call:
-    secrets:
-        SONAR_TOKEN:
-          required: true
 
 env:
     project_key: ${{ secrets.SONAR_PROJECT_KEY }}

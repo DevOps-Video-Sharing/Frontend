@@ -36,8 +36,6 @@ jobs:
   sonar-image:
     needs: testing
     uses: ./.github/workflows/sonarqube-scan.yaml
-    secrets: 
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     #   - name: SonarQube Scan
     #     env:
