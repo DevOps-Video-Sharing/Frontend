@@ -19,20 +19,20 @@ const Register = () => {
       return;
     }
     try {
-      // alert('Một email xác thực đã được gửi đến hòm thư của bạn. Vui lòng kiểm tra và nhập mã xác thực để hoàn tất đăng ký!');
-      //  const emailVerificationResponse = await fetch(`${process.env.REACT_APP_API_URL}/user/send-verification-email`, {
-      //     method: 'POST',
-      //     headers: {
-      //         'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify({
-      //         email: email,
-      //     }),
-      //   });
+      alert('Một email xác thực đã được gửi đến hòm thư của bạn. Vui lòng kiểm tra và nhập mã xác thực để hoàn tất đăng ký!');
+       const emailVerificationResponse = await fetch(`${process.env.REACT_APP_API_URL}/user/send-verification-email`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              email: email,
+          }),
+        });
 
-      //   if (!emailVerificationResponse.ok) {
-      //       throw new Error('Failed to send verification email');
-      // }
+        if (!emailVerificationResponse.ok) {
+            throw new Error('Failed to send verification email');
+      }
       
 
 
