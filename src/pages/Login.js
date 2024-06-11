@@ -21,6 +21,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
     const handleSubmit = async (event) => {
     try {
         event.preventDefault();
+        console.log("URL: ", `${process.env.REACT_APP_API_URL}`)
 
         const response = await fetch(`${process.env.REACT_APP_API_URL}/user/login2`, {
             method: 'POST',

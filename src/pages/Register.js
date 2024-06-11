@@ -36,7 +36,8 @@ const Register = () => {
       
 
 
-
+      console.log("URL: ", `${process.env.REACT_APP_API_URL}`)
+      
       const response = await fetch(`${process.env.REACT_APP_API_URL}/user/register`, {
         method: 'POST',
         headers: {
