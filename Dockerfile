@@ -16,17 +16,20 @@ COPY . .
 # Build ứng dụng
 RUN npm run build
 
-# Sử dụng một image nginx chính thức để phục vụ build
-FROM nginx:alpine
+# Sử dụng một image node chính thức để chạy ứng dụng
+FROM node:16-alpine
 
-# Copy build từ giai đoạn trước vào thư mục phục vụ của nginx
-COPY --from=build /app/build /usr/share/nginx/html
+# Thiết lập thư mục làm việc
+WORKDIR /app
 
-# Copy file cấu hình nginx
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy build từ giai đoạn trước vào thư mục làm việc
+COPY --from=build /app/build /app/build
 
-# Expose cổng 80 để có thể truy cập vào container
-EXPOSE 80
+# Cài đặt serve để phục vụ build
+RUN npm install -g serve
 
-# Lệnh chạy nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Expose cổng 3000 để có thể truy cập vào container
+EXPOSE 3000
+
+# Lệnh chạy serve để phục vụ build
+CMD ["serve", "-s", "build", "-l", "3000"]
