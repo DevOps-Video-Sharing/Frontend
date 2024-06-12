@@ -1,10 +1,9 @@
 name: Continuous Deployment for Frontend
 
 on:
-  workflow_run:
-    workflows: ["Continuous Integration for Frontend"]
-    types:
-      - completed
+  push:
+    branches:
+        - main
 
 env:
   PROJECT_ID: gke-project-423206
