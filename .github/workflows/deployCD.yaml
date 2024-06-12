@@ -1,10 +1,10 @@
 name: Continuous Deployment for Frontend
 
 on:
-  push:
-    branches:
-        - main
-
+  workflow_run:
+    workflows: ["Continuous Integration for Frontend"]
+    types:
+      - completed
 env:
   PROJECT_ID: gke-project-423206
   CLUSTER_NAME: autopilot-cluster-1
