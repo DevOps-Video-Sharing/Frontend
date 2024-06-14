@@ -26,6 +26,7 @@ spec:
             limits:
               cpu: "0.5"
               memory: "200Mi"
+      automountServiceAccountToken: false
               
 ---
 apiVersion: v1
