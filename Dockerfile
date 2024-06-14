@@ -13,16 +13,13 @@ RUN npm install
 # Copy the rest of the application source code
 COPY . .
 
-# Build the application with the environment variable
+# Build the application
 ARG REACT_APP_API_URL
 ENV REACT_APP_API_URL=${REACT_APP_API_URL}
 RUN npm run build
 
 # Stage 2: Serve Application with Nginx
 FROM nginx:alpine
-
-# Remove default Nginx website
-RUN rm -rf /usr/share/nginx/html/*
 
 # Copy build artifacts from the previous stage
 COPY --from=build /app/build /usr/share/nginx/html
