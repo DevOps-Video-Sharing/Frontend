@@ -1,34 +1,33 @@
-# Stage 1: Build React Application
+
+# Sử dụng một image node chính thức làm base image
 FROM node:16-alpine as build
 
-# Set working directory
+# Thiết lập thư mục làm việc
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy package.json và package-lock.json
 COPY package*.json ./
 
-# Install dependencies
+# Cài đặt các dependencies
 RUN npm install
 
-# Copy the rest of the application source code
+# Copy toàn bộ mã nguồn ứng dụng
 COPY . .
 
-# Build the application
-ARG REACT_APP_API_URL
-ENV REACT_APP_API_URL=${REACT_APP_API_URL}
+# Build ứng dụng
 RUN npm run build
 
-# Stage 2: Serve Application with Nginx
+# Sử dụng một image nginx chính thức để phục vụ build
 FROM nginx:alpine
 
-# Copy build artifacts from the previous stage
+# Copy build từ giai đoạn trước vào thư mục phục vụ của nginx
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Copy custom Nginx configuration file
+# Copy file cấu hình nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose port 80
+# Expose cổng 80 để có thể truy cập vào container
 EXPOSE 80
 
-# Command to run Nginx
+# Lệnh chạy nginx
 CMD ["nginx", "-g", "daemon off;"]
