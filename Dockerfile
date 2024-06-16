@@ -1,4 +1,3 @@
-
 # Sử dụng một image node chính thức làm base image
 FROM node:16-alpine as build
 
