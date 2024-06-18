@@ -23,6 +23,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Test Case
+        run: npm test
+        
       - name: Run Build App
         run: 
             npm ci
