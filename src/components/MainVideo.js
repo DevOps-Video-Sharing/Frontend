@@ -1,11 +1,20 @@
 import React, {useEffect,useState, useRef} from "react";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
-import st from '../assets/st.mp4'
 import { CiShare1 } from "react-icons/ci";
 import axios from "axios";
+import CopyButton from "./ButtonCustom/CopyButton";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Mainvideo = (props) =>
 {
+  const notify = (msg,choose) => {
+    if (choose === 1)
+      toast.success(msg)
+    else if (choose === 2) 
+      toast.error(msg)
+  };
+
     const myId = localStorage.getItem('userToken')
     const videoRef = useRef(null);
     const [videoHeight, setVideoHeight] = useState('auto');
@@ -36,6 +45,7 @@ const Mainvideo = (props) =>
           
         }
       };
+      
     const actLikeVideo = async(act) =>{
         try {
           const body = {
@@ -98,6 +108,7 @@ const Mainvideo = (props) =>
 
     return(
         <div className=''>
+            <ToastContainer position='bottom-right'/>
             <div className='flex justify-center'>
                 <div className='w-full h-auto bg-white'>
                     <video src ={`${process.env.REACT_APP_API_URL}/video/get/${displayVideo}`} controls  
@@ -133,10 +144,11 @@ const Mainvideo = (props) =>
                   
                           }
                         </button>
-                        <button className='items-center ml-[20px] flex py-[8px] px-[20px] rounded-[20px] hover:bg-[#e5e5e5] bg-[#f3f3f3]'>
+                        <CopyButton msg={ window.location.href} className='items-center h-[50px] ml-[20px] flex py-[8px] px-[20px] rounded-[20px] hover:bg-[#e5e5e5] bg-[#f3f3f3]'
+                              handleSuc={()=>notify('Đã copy đường dẫn',1)} handleLos={()=>{notify('Copy thất bại',2)}}>
                             Chia sẻ
                             <CiShare1 className='size-[30px] ml-[5px]'/>
-                        </button>        
+                        </CopyButton>      
                     </div>
                 </div>
             </div>

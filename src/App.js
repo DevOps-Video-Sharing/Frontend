@@ -11,6 +11,8 @@ import Account  from './pages/Account';
 import React, { useEffect } from 'react';
 import Main from './pages/Main';
 import ChangeProfile from './controller/ChangeProfile';
+import History from './pages/History';
+import Search from './pages/Search';
 function App() {
   useEffect(() => {
     document.title = "Video sharing";
@@ -28,6 +30,9 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/main" element={<Main />} />
         <Route path="/change" element={<ChangeProfile />} />
+        <Route path="/history" element={<History />} />
+        <Route path="/search" element={<Search />} />
+
       </Routes>
     </Router>
     );

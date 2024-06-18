@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Navbar from '../components/NavbarApp';
-import bgWall from '../assets/images/bgWall.jpg'
+import bg from '../assets/images/bg.avif'
 import { MdOutlineAddCircleOutline } from "react-icons/md";
 import { IoIosCloudUpload } from "react-icons/io";  
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { IoMdMenu } from "react-icons/io";
 import Mainvideo from '../components/MainVideo';
-import VideoComponent from '../components/VideoComponent';
+import VideoComponentProfile from '../components/VideoCom/VideoComponentProfile';
 import { IoMdClose } from "react-icons/io";
 import Comment from '../components/Comment/Comment';
 import Loading from '../components/Loading';
@@ -162,7 +162,7 @@ const Profile = () => {
             }
 
             <div className='h-[60px]'></div>
-            <img src={bgWall} alt='Bg-persional' className=' w-full h-[260px] object-cover' />
+            <img src={bg} alt='Bg-persional' className=' w-full h-[260px] object-cover' />
             <form className=" bg-white shadow-md rounded px-8 pt-6 pb-8 mb-1 " onSubmit={handleSubmit}>
                 {/* {avatar && 
                 //<img src={`data:image/jpeg;base64, ${avatar}`} alt="Avatar" className="w-20 h-20 rounded-full mb-4" />} */}
@@ -229,7 +229,7 @@ const Profile = () => {
                         <p className="text-[24px] font-bold ml-5 mt-2 select-none">Bình luận</p>
                         <div className='w-full px-4 mt-[20px]'>
                             
-                            <Comment/>
+                            <Comment videoId={videoIds[0]}/>
                         </div>
                     </div>:<div></div>
                 }
@@ -242,25 +242,26 @@ const Profile = () => {
             </div>
             <div className='flex flex-wrap mx-[90px] font-normal font-Oswald text-[#717171]'>
                 {console.log(videoIds[0])}
-            {(values && values.length > 0 && thumbnails && thumbnails.length > 0) ? (
-          thumbnails.slice(0).map((url, index) => (
-                <VideoComponent
-                    key={videoIds[index]}
-                    img={url}
-                    title={values[index]?.metadata?.videoName}
-                    username={values[index]?.metadata?.userName}
-                    timestamp={values[index]?.metadata?.timestamp}
-                    view={values[index]?.views}
-                    userid={values[index]?.metadata.userID}
-                    videoId={videoIds[index]}
-                    />
-                ))
-                ) : (
-                    <div className='flex justify-center '>
-                        {/* <Loading/> */}
-                        <p className='ml-5 text-[#ff4b4b] text-[25px]'>Chưa có dữ liệu nào thu được</p>
-                    </div>
-                )}
+                    {(values && values.length > 0 && thumbnails && thumbnails.length > 0) ? (
+                thumbnails.slice(0).map((url, index) => (
+                        <VideoComponentProfile
+                            wi={365}
+                            key={videoIds[index]}
+                            img={url}
+                            title={values[index]?.metadata?.videoName}
+                            username={values[index]?.metadata?.userName}
+                            timestamp={values[index]?.metadata?.timestamp}
+                            view={values[index]?.views}
+                            userid={values[index]?.metadata.userID}
+                            videoId={videoIds[index]}
+                            />
+                        ))
+                        ) : (
+                            <div className='flex justify-center '>
+                                {/* <Loading/> */}
+                                <p className='ml-5 text-[#ff4b4b] text-[25px]'>Chưa có dữ liệu nào thu được</p>
+                            </div>
+                        )}
 
 
             </div>

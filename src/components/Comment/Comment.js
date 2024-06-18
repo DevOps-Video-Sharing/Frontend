@@ -4,7 +4,7 @@ import { AiOutlineSend } from "react-icons/ai";
 import axios from 'axios';
 import { useSearchParams } from "react-router-dom";
 
-const Comment = () => {
+const Comment = (props) => {
     const [comments, setComments] = useState([]);
     const [commentText, setCommentText] = useState("");
     const userId = localStorage.getItem('userToken');
@@ -12,7 +12,7 @@ const Comment = () => {
     const lastName = localStorage.getItem('lastName');
     const userName = `${firstName} ${lastName}`;
     const [searchParams] = useSearchParams();
-    const videoId = searchParams.get('videoId');
+    // const videoId = searchParams.get('videoId');
 
     useEffect(() => {
         fetchComments();
@@ -20,7 +20,7 @@ const Comment = () => {
 
     const fetchComments = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/comment/getALLCommentByVideoId/${videoId}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/comment/getALLCommentByVideoId/${props?.videoId}`);
             setComments(response.data || []); // Ensure comments is an array
         } catch (error) {
             console.error("Error fetching comments:", error);
@@ -35,13 +35,18 @@ const Comment = () => {
     const handleCommentSubmit = async () => {
         if (commentText.trim()) {
             try {
-                const newComment = { text: commentText, likes: 0, dislikes: 0, videoId: videoId, userId: userId, userName: userName };
-                await axios.post('${process.env.REACT_APP_API_URL}/comment/upload', newComment);
+                const newComment = { text: commentText, likes: 0, dislikes: 0, videoId: props.videoId, userId: userId, userName: userName, isRely: false };
+                await axios.post(`${process.env.REACT_APP_API_URL}/comment/upload`, newComment);
                 setCommentText("");
                 fetchComments(); // Refresh the comments list
             } catch (error) {
                 console.error("Error uploading comment:", error);
             }
+        }
+    };
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+          handleCommentSubmit();
         }
     };
 
@@ -54,6 +59,7 @@ const Comment = () => {
                     onChange={handleCommentChange}
                     className="px-4 rounded-[10px] py-3 border-[1px] w-[100%]"
                     placeholder="Viết bình luận ..."
+                    onKeyDown={handleKeyPress}
                 />
                 <AiOutlineSend 
                     onClick={handleCommentSubmit} 
@@ -63,12 +69,23 @@ const Comment = () => {
             <div className="h-[80px]"></div>
             {comments.length > 0 ? (
                 comments.map((comment, index) => (
-                    <MonoComment key={index} comment={comment} fetchComments={fetchComments} />
+                    <div>
+                        {comment.rely?
+                            <div className='ml-[50px]'>
+                                <MonoComment key={index} comment={comment} fetchComments={fetchComments} />
+                            </div>:
+                            <div className=' mt-[10px]'>
+                                <MonoComment key={index} comment={comment} fetchComments={fetchComments} />
+                            </div>  
+
+                        }
+
+                    </div>
                 ))
             ) : (
-                <p className="text-center mt-6">No comments yet. Be the first to comment!</p>
+                <p className="text-center mt-6">Chưa có bình luận nào. Hãy bình luận đầu tiên!</p>
             )}
-        </div>
+        </div>  
     );
 }
 

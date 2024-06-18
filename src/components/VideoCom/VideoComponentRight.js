@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {  useNavigate } from 'react-router-dom';
 
 function formatTimestamp(timestamp) {
@@ -19,38 +19,36 @@ function formatTimestamp(timestamp) {
       return `${days} ngày trước`;
     }
   }
-const VideoComponent = (props) =>
+const VideoComponentRight = (props) =>
 {
     const navigate = useNavigate()
     const handleClick = async ( videoId) => {
         const apiUrl = `${process.env.REACT_APP_API_URL}/video/getVideoIdFromThumbnailId/` + videoId;
         const response = await fetch(apiUrl);
         const result = await response.text();
-        await fetch(`${process.env.REACT_APP_API_URL}/video/updateViews/${videoId}`, {method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json'
-            },})
         const apiVideo = `${process.env.REACT_APP_API_URL}/video/get/` + result;
         console.log(apiVideo)
         navigate(`/video?videoId=${result}&v=${props?.view}&id=${props?.userid}&thumb=${videoId}`)
+        window.location.reload()
       };
       const timestamp = new Date(props?.timestamp);
       const formattedTime = formatTimestamp(timestamp);
     return(
-        <div className='w-3/12  flex'  onClick={()=>handleClick(props?.videoId)}>
-                    <div className='p-[15px] hover:bg-[#dddddd] bg-white mx-4 my-4 mb-10 drop-shadow-lg rounded-[10px] cursor-pointer peer peer-focus:bg-[#f2f2f2]'>
-                        <img className=' w-[370px] h-[220px] rounded-[20px]' src={props?.img} alt='other'/>
-                        <div className='font-roboto  mr-2  '>
-                            <p className='text-[18px] font-medium text-black mt-3 leading-6'>{props?.title}</p>
-                            <p className='text-[16px] mt-1'>{props?.username}</p>
-                            <div className='flex text-[16px] justify-between'>
-                                <p>{props?.view === undefined? '0':props?.view} views</p>
-                                <p>{formattedTime}</p>
-                            </div>
-                        </div>
-                    </div>                 
-                   
+        <div className='hover:bg-[#dddddd] rounded-md py-2 pl-[20px] my-[10px] flex cursor-pointer peer peer-focus:bg-[#f2f2f2]' onClick={()=>handleClick(props?.videoId)}>
+
+            <div className="w-[650px] h-[160px] ">
+              <img className='w-full h-full rounded-[20px]' src={props?.img} alt='other'/>
+
+            </div>
+            <div className='font-roboto ml-[20px] w-full mr-2  '>
+                <p className='text-[19px] font-bold text-black'>{props?.title}</p>
+                <p className='text-[16px]'>{props?.username}</p>
+                <div className='flex justify-between text-[12px] mr-4'>
+                    <p>{props?.view} views</p>
+                    <p>{formattedTime}</p>
                 </div>
+            </div>
+        </div>
     )
 }
-export default VideoComponent
+export default VideoComponentRight

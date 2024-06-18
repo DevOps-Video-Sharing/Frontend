@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import logo from '../assets/images/logo.png';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Register = () => {
@@ -12,14 +14,23 @@ const Register = () => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
 
+  const notify = (msg,choose) => {
+    if (choose === 1)
+      toast.success(msg)
+    else if (choose === 2) 
+      toast.error(msg)
+    else if (choose === 3) 
+      toast.info(msg)
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (password !== passwordConfirm) {
-      alert('Mật khẩu xác nhận không khớp!');
+      notify('Mật khẩu xác nhận không khớp',2)
+      // alert('Mật khẩu xác nhận không khớp!');
       return;
     }
     try {
-      alert('Một email xác thực đã được gửi đến hòm thư của bạn. Vui lòng kiểm tra và nhập mã xác thực để hoàn tất đăng ký!');
+      // alert('Một email xác thực đã được gửi đến hòm thư của bạn. Vui lòng kiểm tra và nhập mã xác thực để hoàn tất đăng ký!');
        const emailVerificationResponse = await fetch(`${process.env.REACT_APP_API_URL}/user/send-verification-email`, {
           method: 'POST',
           headers: {
@@ -33,11 +44,10 @@ const Register = () => {
         if (!emailVerificationResponse.ok) {
             throw new Error('Failed to send verification email');
       }
-      
+      notify('Một email đã gửi tới bạn',3)
 
 
-      console.log("URL: ", `${process.env.REACT_APP_API_URL}`)
-      
+
       const response = await fetch(`${process.env.REACT_APP_API_URL}/user/register`, {
         method: 'POST',
         headers: {
@@ -59,11 +69,13 @@ const Register = () => {
         // }, 10000); // 10 giây
       } else {
         const data = await response.json();
-        alert('Failed to register user: ' + data.error);
+        notify('Lỗi đăng nhập tới tài khoản',2)
+        // alert('Failed to register user: ' + data.error);
       }
     } catch (error) {
       console.error('Failed to register user:', error);
-      alert('Failed to register user. An error occurred.');
+      notify('Lỗi đăng nhập tới tài khoản',2)
+      // alert('Failed to register user. An error occurred.');
     }
   };
   const handlePasswordChange = (e) => {
@@ -153,6 +165,7 @@ const Register = () => {
   };
   return (
     <div className=" bg-[#f0f4f9]  flex justify-center items-center h-screen w-screen"> 
+                <ToastContainer position='bottom-right'/>
       <div className='rounded-[30px] justify-center bg-white flex flex-wrap overflow-hidden w-auto h-auto'>
         <div className=' w-[450px] mt-[30px] ml-[40px] '>
                     <img src = {logo} alt='Logo' className='w-[90px] h-[100px] '/>

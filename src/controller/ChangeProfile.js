@@ -4,11 +4,18 @@ import { FaRegImage } from "react-icons/fa";
 import { IoIosSave } from "react-icons/io";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from "axios";
-import { useSearchParams, useParams , useNavigate } from 'react-router-dom';
-
-
+import { useSearchParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const ChangeProfile  = () => 
 {
+    const notify = (msg,choose) => {
+        if (choose === 1)
+          toast.success(msg)
+        else if (choose === 2) 
+          toast.error(msg)
+      };
+    
     const [activeTab, setActiveTab] = useState('password');
     const currentFirstName = localStorage.getItem('firstName')
     const currentLastName = localStorage.getItem('lastName')
@@ -20,7 +27,8 @@ const ChangeProfile  = () =>
     const [newLastName, setLastName] = useState('')
 
     const [searchParams] = useSearchParams();
-    const userId = searchParams.get('userId');
+    // const userId = searchParams.get('userId');
+    const userId = localStorage.getItem('userToken')
 
     const handleChangeCurPass = (event) => {
         setCurrentPass(event.target.value)
@@ -43,10 +51,17 @@ const ChangeProfile  = () =>
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [avar, setAvar] = useState(null);
-
+    const [base64String, setBase64String] = useState('');
     const handleThumbnailChange = (event) => {
         const file = event.target.files[0];
         setAvar(URL.createObjectURL(file));
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64 = reader.result.split(',')[1];
+          setBase64String(base64);
+        };
+        reader.readAsDataURL(file);
     };
     const handleTabClick = (tab) => {
         setActiveTab(tab);
@@ -60,7 +75,8 @@ const ChangeProfile  = () =>
     const handleSubmitChangePsw = async(event) =>{
         event.preventDefault();
         if (newPass !== newConfirmPass)
-            return alert('Hai password khác nhau')
+            // return alert('Hai password khác nhau')
+            notify('Hai mật khẩu không khớp',2)
         const bodyData = {
             currentPassword: currentPass,
             newPassword: newPass
@@ -70,18 +86,45 @@ const ChangeProfile  = () =>
             const data =  await axios.put(`${process.env.REACT_APP_API_URL}/user/changePassword/${userId}`, bodyData)
             if (!data.data)
             {
-                alert('Sai mật khẩu')
+                // alert('Sai mật khẩu')
+                notify('Sai mật khẩu',2)
             } else
             {
-                alert('Thành công')
+                // alert('Thành công')
+                notify('Thành công',1)
             }
         } catch (error) {
-            alert(error)
+            notify('Kết nối đến server thất bại',2)
+            // alert(error)
         }
     }
+
+      
+    const handleSaveAva = async () => {
+        try {
+            const formData = new FormData()
+            formData.append('avatar',base64String)
+
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/user/changeAvatar/${userId}`, {
+                method: "PUT",
+                body: formData,
+              });
+            console.log(response.data);
+            notify('Thay đổi ảnh đại diện thành công', 1)
+            localStorage.removeItem('avatar')
+            localStorage.setItem('avatar', base64String)
+            window.location.reload()
+          } catch (error) {
+            console.error(error);
+            notify('Thay đổi ảnh đại diện thất bại',2)
+          }
+        };
+
     return(
         <div className="w-full">
             <NavbarApp/>
+            <ToastContainer position='bottom-right'/>
+
             <div className='h-[60px]'></div>
 
             <div className=" gap-10 mt-[20px]">
@@ -103,8 +146,9 @@ const ChangeProfile  = () =>
                         <button
                             className="items-center flex gap-2 text-[15px] hover:shadow-md hover:bg-[#376191] bg-[#0b57a9]
                             text-white font-medium py-[10px] px-4  rounded-[15px] focus:outline-none focus:shadow-outline "
-                            type="submit">
-                            <IoIosSave className="size-[20px]"/>
+                            type="submit" onClick={handleSaveAva}>
+                            <IoIosSave className="size-[20px]"
+                            />
                             Lưu
                         </button>   
                     </div>:<div></div>

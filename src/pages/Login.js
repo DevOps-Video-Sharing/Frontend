@@ -2,10 +2,18 @@ import React, { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo.png'
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
   
 
-    const Login = () => {
+const Login = () => {
+    const notify = (msg,choose) => {
+        if (choose === 1)
+          toast.success(msg)
+        else if (choose === 2) 
+          toast.error(msg)
+      };
+    
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -21,8 +29,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
     const handleSubmit = async (event) => {
     try {
         event.preventDefault();
-        console.log("URL: ", `${process.env.REACT_APP_API_URL}`)
-        console.log("REACT_APP_API_URL: ", process.env.REACT_APP_API_URL);
+
         const response = await fetch(`${process.env.REACT_APP_API_URL}/user/login2`, {
             method: 'POST',
             headers: {
@@ -35,7 +42,6 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
         });
 
         if (response.ok) {
-            alert('User Login!');
             const data = await response.json();
             console.log("user id: ", data.username);
             console.log("user token: ", data.id);   
@@ -50,11 +56,13 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
             navigate('/');
         } else {
             const data = await response.json();
-            alert('Failed to login: ' + data.error);
-        }
-    } catch (error) {
-        console.error('Failed to login:', error);
-        alert('Failed to login. An error occurred.');
+            // alert('Failed to login: ' + data.error);
+            notify('Lỗi truy cập server', 2)
+            }
+            } catch (error) {
+                console.error('Failed to login:', error);
+                // alert('Failed to login. An error occurred.');
+                notify('Đăng nhập thất bại. \n Kiểm tra lại tài khoản', 2)
     }
     };
 
@@ -67,6 +75,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
     const handleFocusPass = () => {
         setFocusedPass(true);
       };
+  
     const handleBlur = () => {
       if (username === "") {
         setFocused(false);
@@ -90,6 +99,8 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
     return (
         <div className=" bg-[#f0f4f9]  flex justify-center items-center h-screen w-screen"> 
+            <ToastContainer position='bottom-right'/>
+
             <div className='rounded-[30px] justify-center bg-white flex flex-wrap overflow-hidden w-auto h-auto'>
                 <div className=' w-[500px] mt-[30px] ml-[40px] '>
                     <img src = {logo} alt='Logo' className='w-[90px] h-[100px] '/>
