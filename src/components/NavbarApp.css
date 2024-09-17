@@ -1,0 +1,197 @@
+/* NavbarApp.css */
+.navbar {
+    z-index: 50;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: white;
+    padding: 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    cursor: pointer;
+    margin-left: 40px;
+    margin: 5px;
+    width: 50px;
+    height: 50px;
+}
+
+.title {
+    cursor: pointer;
+    font-size: 30px;
+    color: #595959;
+    font-weight: bold;
+    margin-left: 20px;
+    font-family: 'Teko', sans-serif;
+}
+
+.search-input {
+    flex-grow: 1;
+    margin-left: 250px;
+    padding-left: 20px;
+    width: 500px;
+    height: 45px;
+    background-color: #f0f4f9;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    outline: none;
+}
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.register-button,
+.login-button,
+.upload-button {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 10px 16px;
+    margin: 1px 15px;
+    border-radius: 30px;
+    outline: none;
+    cursor: pointer;
+}
+
+.register-button {
+    background-color: white;
+    color: #0b57d0;
+    border: none;
+}
+
+.login-button {
+    background-color: #0b57d0;
+    color: white;
+    border: none;
+}
+
+.upload-button {
+    background-color: #0b57d0;
+    color: white;
+    border: none;
+}
+
+.upload-icon {
+    margin-left: 5px;
+}
+
+.notification-icon {
+    margin-left: 15px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.avatar-container {
+    position: relative;
+    margin-left: 15px;
+}
+
+.avatar {
+    cursor: pointer;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+.profile-menu {
+    position: absolute;
+    right: 20px;
+    top: 65px;
+    min-width: 250px;
+    max-width: 400px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    display: none;
+}
+
+.profile-menu.hidden {
+    display: none;
+}
+
+.triangle-icon {
+    position: absolute;
+    right: 17px;
+    top: -32px;
+    color: white;
+}
+
+.profile-options {
+    margin-top: -20px;
+    color: #545454;
+}
+
+.profile-item {
+    display: flex;
+    align-items: center;
+}
+
+.profile-avatar {
+    margin-left: 15px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.profile-name {
+    margin: 0 15px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.divider {
+    margin: 10px 15px;
+    border-top: 1px solid #ccc;
+}
+
+.profile-option {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.profile-icon {
+    margin: 0 15px;
+}
+
+.profile-text {
+    font-weight: medium;
+    width: 150px;
+}
+
+.profile-arrow {
+    margin-left: auto;
+    margin-right: 15px;
+}
+
+@media (max-width: 768px) {
+    .title {
+        display: none;
+    }
+
+    .search-input {
+        margin-left: 20px;
+        width: 200px;
+    }
+
+    .auth-buttons {
+        flex-direction: column;
+        margin-left: 0;
+    }
+
+    .register-button,
+    .login-button,
+    .upload-button {
+        margin: 5px 0;
+    }
+
+    .avatar-container {
+        margin-left: 0;
+    }
+}
