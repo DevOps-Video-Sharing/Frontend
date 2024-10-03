@@ -49,8 +49,8 @@ jobs:
 #     needs: build-image
 #     uses: ./.github/workflows/scan-image.yaml
 
-  notify:
-    needs: scan-image
-    uses: ./.github/workflows/notifyCI.yaml
-    secrets:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  # notify:
+  #   needs: scan-image
+  #   uses: ./.github/workflows/notifyCI.yaml
+  #   secrets:
+  #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
