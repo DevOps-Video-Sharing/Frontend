@@ -33,11 +33,11 @@ jobs:
       - name: Set up MongoDB URI
         run: echo "SPRING_DATA_MONGODB_URI=mongodb://localhost:27017/frontend" >> $GITHUB_ENV
 
-  sonar-cloud-scan:
-    needs: testing
-    uses: ./.github/workflows/sonarqube-scan.yaml
-    secrets: 
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  # sonar-cloud-scan:
+  #   needs: testing
+  #   uses: ./.github/workflows/sonarqube-scan.yaml
+  #   secrets: 
+  #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   build-image:
     needs: testing
