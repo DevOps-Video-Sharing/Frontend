@@ -60,12 +60,16 @@ const Livestream = () => {
                             readOnly
                             className="border border-gray-300 rounded-lg p-2 text-center font-mono text-lg w-[120px] bg-gray-100 mr-4"
                         />
-                        <button
-                            onClick={() => setEventCode(generateEventCode())}
-                            className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600"
-                        >
-                            Tạo mã mới
-                        </button>
+                    <button
+                        onClick={() => {
+                            setEventCode(generateEventCode());
+                            window.location.reload();  
+                        }}
+                        className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600"
+                    >
+                        Tạo mã mới
+                    </button>
+
                     </div>
                 </div>
                 
