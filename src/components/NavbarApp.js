@@ -64,6 +64,9 @@ const NavbarApp = () => {
             <div className='auth-buttons'>
                 { !userToken?
                     <div className='auth-buttons'>
+                        <button className="login-button" type="button" onClick={()=>{navigate('/livestream')}}>
+                            Phát trực tiếp
+                        </button>   
                         <button className="register-button" type="button" onClick={()=>{navigate('/register')}}>
                             Đăng ký
                         </button>     

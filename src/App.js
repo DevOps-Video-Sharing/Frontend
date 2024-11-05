@@ -11,6 +11,7 @@ import Account  from './pages/Account';
 import React, { useEffect } from 'react';
 import Main from './pages/Main';
 import ChangeProfile from './controller/ChangeProfile';
+import Livestream from './pages/Livestream';
 function App() {
   useEffect(() => {
     document.title = "Video sharing";
@@ -28,6 +29,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/main" element={<Main />} />
         <Route path="/change" element={<ChangeProfile />} />
+        <Route path="/livestream" element={<Livestream />} />
       </Routes>
     </Router>
     );
