@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import ReactPlayer from "react-player";
 
 // Hàm tạo mã sự kiện ngẫu nhiên gồm 5 ký tự
 const generateEventCode = () => {
@@ -11,9 +12,26 @@ const generateEventCode = () => {
 };
 
 const Livestream = () => {
-    const [eventCode, setEventCode] = useState(generateEventCode());
+    // Lấy mã sự kiện từ localStorage hoặc tạo mã mới nếu chưa có
+    const [eventCode, setEventCode] = useState(localStorage.getItem("eventCode") || generateEventCode());
     const [message, setMessage] = useState('');
     const [chatMessages, setChatMessages] = useState([]);
+    const [isStreamLive, setIsStreamLive] = useState(false);
+
+    useEffect(() => {
+        // Lưu mã sự kiện vào localStorage khi eventCode thay đổi
+        localStorage.setItem("eventCode", eventCode);
+    }, [eventCode]);
+
+    // Hàm kiểm tra trạng thái của livestream
+    const checkStreamStatus = async () => {
+        try {
+            const response = await fetch(`http://192.168.120.213:13000/hls/${eventCode}.m3u8`, { method: 'HEAD' });
+            setIsStreamLive(response.ok); // Kiểm tra nếu stream có sẵn
+        } catch (error) {
+            setIsStreamLive(false);
+        }
+    };
 
     // Hàm xử lý khi người dùng gửi tin nhắn
     const handleSendMessage = () => {
@@ -22,6 +40,10 @@ const Livestream = () => {
             setMessage('');
         }
     };
+
+    // URL của livestream (dựa vào eventCode làm stream key)
+    const streamUrl = `http://192.168.120.213:13000/hls/${eventCode}.m3u8`;
+    console.log(streamUrl)
 
     return (
         <div className="flex bg-[#f0f4f9] min-h-screen p-5">
@@ -49,12 +71,30 @@ const Livestream = () => {
                 
                 {/* Khung phát trực tiếp */}
                 <div className="aspect-w-16 aspect-h-9 bg-black mb-4 rounded-lg">
-                    {/* Khung video giả lập */}
-                    <p className="text-center text-white font-bold text-xl">Khung Video Trực Tiếp</p>
+                    {/* Hiển thị video phát trực tiếp */}
+                    {isStreamLive ? (
+                        <ReactPlayer
+                            url={streamUrl}
+                            playing
+                            controls
+                            width="100%"
+                            height="100%"
+                            config={{ file: { forceHLS: true } }}
+                        />
+                    ) : (
+                        <p className="text-gray-500 text-center py-10">Chưa có livestream nào đang phát.</p>
+                    )}
                 </div>
                 
+                <button
+                    onClick={checkStreamStatus}
+                    className="px-4 py-2 mt-4 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600"
+                >
+                    Kiểm tra trạng thái livestream
+                </button>
+                
                 {/* Thông tin thêm */}
-                <p className="text-gray-500 text-sm">Đang phát trực tiếp: Đây là khung video phát trực tiếp của bạn.</p>
+                <p className="text-gray-500 text-sm mt-2">Đang phát trực tiếp: Đây là khung video phát trực tiếp của bạn.</p>
             </div>
 
             {/* Thanh trò chuyện trực tiếp */}
